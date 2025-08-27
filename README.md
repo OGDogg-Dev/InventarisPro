@@ -41,8 +41,8 @@ Berikut adalah langkah-langkah untuk menginstal dan menjalankan aplikasi ini di 
 
 1.  **Clone Repository:**
     ```bash
-    git clone [https://github.com/IamImam7/project_management.git](https://github.com/IamImam7/project_management.git)
-    cd project_management
+    git clone [https://github.com/OGDogg-Dev/InventarisPro](https://github.com/OGDogg-Dev/InventarisPro)
+    cd InventarisPro
     ```
 
 2.  **Install Dependensi Composer:**
