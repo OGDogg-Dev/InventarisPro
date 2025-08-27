@@ -41,7 +41,7 @@ Berikut adalah langkah-langkah untuk menginstal dan menjalankan aplikasi ini di 
 
 1.  **Clone Repository:**
     ```bash
-    git clone [https://github.com/OGDogg-Dev/InventarisPro](https://github.com/OGDogg-Dev/InventarisPro)
+    git clone https://github.com/OGDogg-Dev/InventarisPro
     cd InventarisPro
     ```
 
