@@ -14,6 +14,11 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories'));
     }
 
+    public function create()
+    {
+        return view('categories.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -60,7 +65,4 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')
                          ->with('success', 'Kategori berhasil dihapus.');
     }
-
-    // Metode create, show, edit biasanya bisa disatukan dalam modal di halaman index untuk UI yang lebih simpel.
-    // Namun jika ingin halaman terpisah, buat methodnya seperti di SupplierController.
 }
