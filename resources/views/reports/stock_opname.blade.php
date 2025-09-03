@@ -30,11 +30,11 @@
                             </div>
                             <div id="input-month" class="{{ $filter != 'month' ? 'hidden' : '' }}">
                                 <x-input-label for="month" value="Pilih Bulan" />
-                                <input type="month" id="month" name="date" value="{{ $filter == 'month' ? $date : '' }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                                <input type="month" id="month" name="month" value="{{ $filter == 'month' ? $date : '' }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
                             </div>
                             <div id="input-year" class="{{ $filter != 'year' ? 'hidden' : '' }}">
                                 <x-input-label for="year" value="Pilih Tahun" />
-                                <input type="number" id="year" name="date" min="2000" max="2100" value="{{ $filter == 'year' ? $date : now()->format('Y') }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                                <input type="number" id="year" name="year" min="2000" max="2100" value="{{ $filter == 'year' ? $date : '' }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
                             </div>
                             <div>
                                 <x-primary-button>Filter</x-primary-button>
@@ -99,9 +99,19 @@
     <script>
         function toggleInputs() {
             const type = document.getElementById('filter').value;
+            const dateInput = document.getElementById('date');
+            const monthInput = document.getElementById('month');
+            const yearInput = document.getElementById('year');
+
             document.getElementById('input-date').classList.toggle('hidden', type !== 'date');
             document.getElementById('input-month').classList.toggle('hidden', type !== 'month');
             document.getElementById('input-year').classList.toggle('hidden', type !== 'year');
+
+            dateInput.disabled = type !== 'date';
+            monthInput.disabled = type !== 'month';
+            yearInput.disabled = type !== 'year';
         }
+
+        document.addEventListener('DOMContentLoaded', toggleInputs);
     </script>
 </x-app-layout>

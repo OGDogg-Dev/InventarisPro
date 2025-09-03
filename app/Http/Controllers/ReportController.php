@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\StockMovement;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -17,10 +16,16 @@ class ReportController extends Controller
     {
         return view('reports.index');
     }
+
     public function stockOpname(Request $request)
     {
         $filter = $request->input('filter', 'date');
-        $rawDate = $request->input('date', now()->toDateString());
+
+        $rawDate = match ($filter) {
+            'month' => $request->input('month', now()->format('Y-m')),
+            'year' => $request->input('year', now()->format('Y')),
+            default => $request->input('date', now()->toDateString()),
+        };
 
         switch ($filter) {
             case 'month':
@@ -48,6 +53,7 @@ class ReportController extends Controller
             ->get()
             ->map(function ($product) {
                 $product->stock_calc = ($product->stock_in - $product->stock_out);
+
                 return $product;
             });
 
@@ -71,9 +77,9 @@ class ReportController extends Controller
         if ($request->filled('product_id')) {
             $selectedProduct = Product::find($request->product_id);
             $movements = StockMovement::where('product_id', $request->product_id)
-                                      ->with('user')
-                                      ->latest()
-                                      ->paginate(20);
+                ->with('user')
+                ->latest()
+                ->paginate(20);
         }
 
         return view('reports.product_history', compact('products', 'movements', 'selectedProduct'));
