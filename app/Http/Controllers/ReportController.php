@@ -53,17 +53,19 @@ class ReportController extends Controller
                     break;
             }
 
+            // Hitung stok sistem per produk hingga akhir periode yang dipilih
+            $stockByProduct = StockMovement::selectRaw(
+                    'product_id, SUM(CASE WHEN type = "in" THEN quantity ELSE -quantity END) as qty'
+                )
+                ->where('created_at', '<=', $endDate)
+                ->groupBy('product_id')
+                ->pluck('qty', 'product_id');
+
             $products = Product::with('category')
-                ->withSum(['stockMovements as stock_in' => function ($query) use ($endDate) {
-                    $query->where('type', 'in')->where('created_at', '<=', $endDate);
-                }], 'quantity')
-                ->withSum(['stockMovements as stock_out' => function ($query) use ($endDate) {
-                    $query->where('type', 'out')->where('created_at', '<=', $endDate);
-                }], 'quantity')
                 ->orderBy('name')
                 ->get()
-                ->map(function ($product) {
-                    $product->stock_calc = ($product->stock_in - $product->stock_out);
+                ->map(function ($product) use ($stockByProduct) {
+                    $product->stock_calc = (int) ($stockByProduct[$product->id] ?? 0);
 
                     return $product;
                 });
