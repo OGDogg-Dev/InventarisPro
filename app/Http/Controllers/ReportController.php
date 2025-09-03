@@ -30,6 +30,8 @@ class ReportController extends Controller
         $rawDate = null;
         $displayDate = null;
         $products = collect();
+        $totalPurchase = 0;
+        $totalSell = 0;
 
         if ($hasFilter) {
             $rawDate = match ($filter) {
@@ -69,6 +71,9 @@ class ReportController extends Controller
 
                     return $product;
                 });
+
+            $totalPurchase = $products->sum(fn($p) => $p->stock_calc * $p->price_purchase);
+            $totalSell = $products->sum(fn($p) => $p->stock_calc * $p->price_sell);
         }
 
         return view('reports.stock_opname', [
@@ -77,6 +82,8 @@ class ReportController extends Controller
             'date' => $rawDate,
             'displayDate' => $displayDate,
             'hasFilter' => $hasFilter,
+            'totalPurchase' => $totalPurchase,
+            'totalSell' => $totalSell,
         ]);
     }
 

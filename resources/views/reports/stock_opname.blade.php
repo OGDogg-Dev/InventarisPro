@@ -59,6 +59,7 @@
                                         <th class="py-2 px-3 border-b text-center text-sm">Stok Sistem</th>
                                         <th class="py-2 px-3 border-b text-center text-sm" style="width: 15%;">Stok Fisik</th>
                                         <th class="py-2 px-3 border-b text-right text-sm">Nilai Stok (Beli)</th>
+                                        <th class="py-2 px-3 border-b text-right text-sm">Nilai Stok (Jual)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,12 +74,15 @@
                                                 {{-- Kolom kosong untuk diisi manual saat cek fisik --}}
                                             </td>
                                             <td class="py-2 px-3 border-b text-right text-sm">
-                                                Rp {{ number_format($product->stock_calc * $product->price_purchase, 0, ',', '.') }}
+                                                Rp {{ number_format($product->stock_calc * $product->price_purchase, 2, ',', '.') }}
+                                            </td>
+                                            <td class="py-2 px-3 border-b text-right text-sm">
+                                                Rp {{ number_format($product->stock_calc * $product->price_sell, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="py-4 px-3 text-center text-sm">Tidak ada data produk untuk ditampilkan.</td>
+                                            <td colspan="8" class="py-4 px-3 text-center text-sm">Tidak ada data produk untuk ditampilkan.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -86,7 +90,10 @@
                                     <tr>
                                         <td colspan="6" class="py-2 px-3 text-right text-sm">Total Nilai Inventaris:</td>
                                         <td class="py-2 px-3 text-right text-sm">
-                                            Rp {{ number_format($products->sum(function($p) { return $p->stock_calc * $p->price_purchase; }), 0, ',', '.') }}
+                                            Rp {{ number_format($totalPurchase, 2, ',', '.') }}
+                                        </td>
+                                        <td class="py-2 px-3 text-right text-sm">
+                                            Rp {{ number_format($totalSell, 2, ',', '.') }}
                                         </td>
                                     </tr>
                                 </tfoot>
