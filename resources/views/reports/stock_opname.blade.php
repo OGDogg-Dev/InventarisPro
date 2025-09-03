@@ -42,55 +42,59 @@
                         </div>
                     </form>
 
-                    <div class="mb-4">
-                        <p><strong>Tanggal Laporan:</strong> {{ $displayDate }}</p>
-                        <p class="text-sm text-gray-600">Gunakan daftar ini untuk membandingkan stok yang tercatat di sistem dengan stok fisik di gudang.</p>
-                    </div>
+                    @if ($hasFilter)
+                        <div class="mb-4">
+                            <p><strong>Tanggal Laporan:</strong> {{ $displayDate }}</p>
+                            <p class="text-sm text-gray-600">Gunakan daftar ini untuk membandingkan stok yang tercatat di sistem dengan stok fisik di gudang.</p>
+                        </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border">
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th class="py-2 px-3 border-b text-left text-sm">No.</th>
-                                    <th class="py-2 px-3 border-b text-left text-sm">SKU</th>
-                                    <th class="py-2 px-3 border-b text-left text-sm">Nama Produk</th>
-                                    <th class="py-2 px-3 border-b text-left text-sm">Kategori</th>
-                                    <th class="py-2 px-3 border-b text-center text-sm">Stok Sistem</th>
-                                    <th class="py-2 px-3 border-b text-center text-sm" style="width: 15%;">Stok Fisik</th>
-                                    <th class="py-2 px-3 border-b text-right text-sm">Nilai Stok (Beli)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($products as $product)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="py-2 px-3 border-b text-sm">{{ $loop->iteration }}</td>
-                                        <td class="py-2 px-3 border-b text-sm">{{ $product->sku }}</td>
-                                        <td class="py-2 px-3 border-b text-sm">{{ $product->name }}</td>
-                                        <td class="py-2 px-3 border-b text-sm">{{ $product->category->name ?? 'N/A' }}</td>
-                                        <td class="py-2 px-3 border-b text-center text-sm font-bold">{{ $product->stock_calc }}</td>
-                                        <td class="py-2 px-3 border-b text-sm">
-                                            {{-- Kolom kosong untuk diisi manual saat cek fisik --}}
-                                        </td>
-                                        <td class="py-2 px-3 border-b text-right text-sm">
-                                            Rp {{ number_format($product->stock_calc * $product->price_purchase, 0, ',', '.') }}
-                                        </td>
-                                    </tr>
-                                @empty
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border">
+                                <thead class="bg-gray-200">
                                     <tr>
-                                        <td colspan="7" class="py-4 px-3 text-center text-sm">Tidak ada data produk untuk ditampilkan.</td>
+                                        <th class="py-2 px-3 border-b text-left text-sm">No.</th>
+                                        <th class="py-2 px-3 border-b text-left text-sm">SKU</th>
+                                        <th class="py-2 px-3 border-b text-left text-sm">Nama Produk</th>
+                                        <th class="py-2 px-3 border-b text-left text-sm">Kategori</th>
+                                        <th class="py-2 px-3 border-b text-center text-sm">Stok Sistem</th>
+                                        <th class="py-2 px-3 border-b text-center text-sm" style="width: 15%;">Stok Fisik</th>
+                                        <th class="py-2 px-3 border-b text-right text-sm">Nilai Stok (Beli)</th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                            <tfoot class="font-bold bg-gray-100">
-                                <tr>
-                                    <td colspan="6" class="py-2 px-3 text-right text-sm">Total Nilai Inventaris:</td>
-                                    <td class="py-2 px-3 text-right text-sm">
-                                        Rp {{ number_format($products->sum(function($p) { return $p->stock_calc * $p->price_purchase; }), 0, ',', '.') }}
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    @forelse ($products as $product)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="py-2 px-3 border-b text-sm">{{ $loop->iteration }}</td>
+                                            <td class="py-2 px-3 border-b text-sm">{{ $product->sku }}</td>
+                                            <td class="py-2 px-3 border-b text-sm">{{ $product->name }}</td>
+                                            <td class="py-2 px-3 border-b text-sm">{{ $product->category->name ?? 'N/A' }}</td>
+                                            <td class="py-2 px-3 border-b text-center text-sm font-bold">{{ $product->stock_calc }}</td>
+                                            <td class="py-2 px-3 border-b text-sm">
+                                                {{-- Kolom kosong untuk diisi manual saat cek fisik --}}
+                                            </td>
+                                            <td class="py-2 px-3 border-b text-right text-sm">
+                                                Rp {{ number_format($product->stock_calc * $product->price_purchase, 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="py-4 px-3 text-center text-sm">Tidak ada data produk untuk ditampilkan.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                                <tfoot class="font-bold bg-gray-100">
+                                    <tr>
+                                        <td colspan="6" class="py-2 px-3 text-right text-sm">Total Nilai Inventaris:</td>
+                                        <td class="py-2 px-3 text-right text-sm">
+                                            Rp {{ number_format($products->sum(function($p) { return $p->stock_calc * $p->price_purchase; }), 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    @else
+                        <p class="text-center text-gray-600">Silakan pilih tanggal, bulan, atau tahun untuk menampilkan laporan stok.</p>
+                    @endif
 
                 </div>
             </div>
