@@ -4,30 +4,17 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{-- Form Tambah Kategori --}}
-                    <h3 class="font-semibold mb-4">Tambah Kategori Baru</h3>
-                    <form action="{{ route('categories.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                        @csrf
-                        <div class="md:col-span-2">
-                            <x-input-label for="name" value="Nama Kategori"/>
-                            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" required/>
-                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                        </div>
-                        <div>
-                            <x-primary-button>Simpan</x-primary-button>
-                        </div>
-                    </form>
-
-                    <hr class="my-6">
-
-                    {{-- Tabel Daftar Kategori --}}
-                    <h3 class="font-semibold mb-4">Daftar Kategori</h3>
-                     @if (session('success'))
+                    @if (session('success'))
                         <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">{{ session('success') }}</div>
                     @endif
-                     @if (session('error'))
+                    @if (session('error'))
                         <div class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">{{ session('error') }}</div>
                     @endif
+
+                    <div class="flex justify-end mb-4">
+                        <a href="{{ route('categories.create') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Tambah Kategori</a>
+                    </div>
+
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white">
                             <tbody>

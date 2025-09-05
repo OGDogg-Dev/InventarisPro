@@ -26,6 +26,10 @@
                     @endcan
 
                     @role('Admin')
+                        <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4a.75.75 0 00-1.5 0v9.19l-2.72-2.72a.75.75 0 10-1.06 1.06l4 4a.75.75 0 001.06 0l4-4a.75.75 0 10-1.06-1.06l-2.72 2.72V4z"/></svg>
+                            {{ __('Kategori') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                              <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M3.25 4A2.25 2.25 0 001 6.25v7.5A2.25 2.25 0 003.25 16h13.5A2.25 2.25 0 0019 13.75v-7.5A2.25 2.25 0 0016.75 4H3.25zM16.5 6.75h-13v7h13v-7z" /></svg>
                             {{ __('Produk') }}
